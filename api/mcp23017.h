@@ -19,6 +19,8 @@
 
 #endif
 
+#include "pico/mutex.h"
+
 //#define DEBUG_MCP23017
 #ifdef  DEBUG_MCP23017
 #define mcp_debug(fmt, arg...) \
@@ -149,6 +151,7 @@ public:
 	int flush_output() const;
 
 private:
+
 	int setup_bank_configuration(int reg, bool mirroring, bool polarity) const;
 
 	int write_register(uint8_t reg, uint8_t value) const;
@@ -160,6 +163,7 @@ private:
 	int write_dual_registers(uint8_t reg, int value) const;
 
 private:
+	static mutex_t i2c_mutex;
 	i2c_inst_t *i2c;
 	const uint8_t address;
 	int output{};
